@@ -55,5 +55,17 @@ export default {
       let downloadURL = uploadTask.snapshot.downloadURL
       callback && callback(null, downloadURL)
     })
+  },
+
+  updateProfile (updatedProfile, callback) {
+    let user = auth.currentUser
+    user.updateProfile({
+      displayName: updatedProfile.displayName,
+      photoURL: updatedProfile.photoURL
+    }).then((res) => {
+      callback && callback(null, res)
+    }, error => {
+      callback && callback(error, null)
+    })
   }
 }

@@ -35,6 +35,10 @@ const store = new Vuex.Store({
 
     isLoading (state, flag = false) {
       state.isLoading = flag
+    },
+
+    profileUpdate (state, res) {
+      console.log(res)
     }
   },
 
@@ -52,6 +56,16 @@ const store = new Vuex.Store({
     },
     isLOADING (context, flag) {
       context.commit('isLoading', flag)
+    },
+    PROFILEUPDATE (context, profile) {
+      auth.updateProfile(profile, (err, res) => {
+        if (err) {
+          alert(err)
+          console.log(err)
+          return
+        }
+        context.commit('profileUpdate', res)
+      })
     }
   }
 })
