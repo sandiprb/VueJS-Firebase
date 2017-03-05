@@ -9,18 +9,25 @@ const storageRef = storage.ref()
 
 export default {
   auth: auth,
-  login: function () {
-    const promise = auth.signInWithEmailAndPassword(this.newUser.email, this.newUser.pass)
+
+  login: function (user = {email: '', password: ''}, callback) {
+    if (!user.email || !user.password) {
+      callback('Invalid email or password', null)
+      return
+    }
+    const promise = auth.signInWithEmailAndPassword(user.email, user.password)
     promise.catch(e => console.log(e))
   },
-  logout: function () {
+
+  logout: function (callback) {
     auth.signOut()
     .then(function () {
-      console.log('logged out')
+      callback && callback()
     }, function (error) {
       console.log(error)
     })
   },
+
   signUp: function (user = {email: '', password: ''}, callback) {
     console.log(user)
     if (!user.email || !user.password) {
@@ -31,6 +38,7 @@ export default {
       callback(error, '')
     })
   },
+
   fileUpload: function (file, path = '/', callback) {
     if (!file) {
       alert('Please select a file to upload')
@@ -41,14 +49,6 @@ export default {
     uploadTask.on('state_changed', function (snapshot) {
       let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
       console.log('Upload is ' + progress + '% done')
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED:
-          console.log('Upload is paused')
-          break
-        case firebase.storage.TaskState.RUNNING:
-          console.log('Upload is running')
-          break
-      }
     }, error => {
       callback(error, null)
     }, success => {

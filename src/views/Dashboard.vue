@@ -1,6 +1,6 @@
 <template>
   <div>
-    Welcome <br/>
+    Welcome {{user.email}}<br/>
     <a href="javascript:;" @click="logout" class="btn btn-link">Logout</a>
     <div class="row">
       <div class="col-sm-4 col-sm-offset-4">
@@ -26,7 +26,13 @@
   export default {
     data () {
       return {
-
+      }
+    },
+    computed: {
+      user () {
+        let user = this.$store.getters.user
+        console.log(user)
+        return user && user
       }
     },
     methods: {
@@ -42,7 +48,7 @@
         })
       },
       logout: function () {
-        auth.logout()
+        this.$store.dispatch('LOGOUT')
       }
     }
   }
