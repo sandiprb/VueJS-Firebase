@@ -67,5 +67,13 @@ export default {
     }, error => {
       callback && callback(error, null)
     })
+  },
+
+  verifyEmail (callback) {
+    auth.currentUser.sendEmailVerification().then((success) => {
+      callback && callback(null, success)
+    }, error => {
+      callback && callback(error, null)
+    })
   }
 }
